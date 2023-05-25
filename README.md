@@ -1,5 +1,7 @@
 # Actor Discovery
 
+### By Florian "FloRide" Reimat
+
 ## About
 
 This is a simple [Actor model](https://en.wikipedia.org/wiki/Actor_model) project, using Rust and [Coerce](https://crates.io/crates/coerce). I've used it as a learning plateform.
@@ -54,9 +56,25 @@ MQTT_PORT=1883                                          # The MQTT port server
 touch .env
 $EDITOR .env # Use your favorite editor
 
+# If you are on nix
+# nix-shell
+
 # Debug | Run
 cargo run
 
 # Build
 cargo build --release
 ```
+
+## Docker
+
+```sh
+# Setup .env
+cp .env.default .env
+
+# Run
+docker-compose run -d
+```
+
+Please don't forget to setup the env file before launching the docker-compose.
+The default .env file is this one [.env.default](./.env.default).
