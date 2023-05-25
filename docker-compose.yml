@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+  database:
+    image: postgres:14.1-alpine
+    restart: unless-stopped
+    hostname: $POSTGRES_HOST
+    healthcheck:
+      test:
+        ["CMD", "sh", "-c", "pg_isready -U $$POSTGRES_USER -h $$(hostname -i)"]
+      interval: 10s
+      timeout: 15s
+      retries: 30
+    env_file:
+      - .env
+    networks:
+      - db-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    hostname: $PGADMIN_HOST
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - 15432:15432
+    depends_on:
+      - database
+    networks:
+      - pgadmin-network
+      - db-network
+
+  mqtt_broker:
+    image: eclipse-mosquitto
+    hostname: $MQTT_HOST
+    volumes:
+      - "./mqtt/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+    ports:
+      - 1883:1883
+    networks:
+      - mqtt-network
+
+  actor_discovery:
+    build: .
+    container_name: actor_discovery
+    env_file:
+      - .env
+    depends_on:
+      database:
+        condition: service_healthy
+      mqtt_broker:
+        condition: service_started
+    networks:
+      - mqtt-network
+      - actor-discovery-network
+      - db-network
+
+networks:
+  db-network:
+  pgadmin-network:
+  mqtt-network:
+  actor-discovery-network:
