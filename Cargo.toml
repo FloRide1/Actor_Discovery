@@ -1,0 +1,22 @@
+[package]
+name = "actor_discovery"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+dotenvy = "0.15"
+serde_json = "1"
+serde_derive = "1"
+rumqttc = "0.21.0"
+pretty_env_logger = "0.4.0"
+log = "0.4.17"
+coerce = "0.8.8"
+tokio = "1.28.1"
+async-trait = "0.1.68"
+regex = "1.8.1"
+lazy_static = "1.4.0"
+diesel = { version = "2.0.4", features = ["postgres"] }
+diesel-async = { version = "0.2.2", features = ["postgres"] }
+diesel_migrations = "2.0.0"
